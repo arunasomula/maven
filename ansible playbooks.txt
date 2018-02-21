@@ -1,0 +1,33 @@
+creation of files in yml
+---
+ - hosts: all
+   tasks:
+    - name: create file on tmp dir for clients
+      file: path=/tmp/ansi state=touch
+    - name: create directory on mnt dir for clients
+      file: path=/mnt/testdir state=directory
+...
+
+
+istalling packages and starting services in yml
+---
+ - hosts: all
+   tasks:
+   - name: package installation for redhat family
+     yum: pkg=httpd state=installed
+     when: ansible_os_family =="RedHat"
+     ignore_error: true
+   - name: package installation for debian family
+     apt: pkg=apache2 state=installed
+     when: ansible_os_family =="Debian"
+     ignore_error: true
+   - name: start service for redht family
+     service: name=httpd state=started
+     when: ansible_os_family =="RedHat"
+     ignore_error: true
+   - name: start service for debian family
+     service: name=apache2 state=started
+     when: ansible_os_family =="Debian"
+     ignore_error: true
+
+...
